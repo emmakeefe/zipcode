@@ -1,0 +1,1530 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 80,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import csv\n",
+    "import pandas as pd\n",
+    "import numpy as np"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 81,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>fileid</th>\n",
+       "      <th>stusab</th>\n",
+       "      <th>chariter</th>\n",
+       "      <th>cifsn</th>\n",
+       "      <th>logrecno</th>\n",
+       "      <th>p0010001</th>\n",
+       "      <th>sumlev</th>\n",
+       "      <th>geocomp</th>\n",
+       "      <th>zcta5</th>\n",
+       "      <th>arealand</th>\n",
+       "      <th>areawatr</th>\n",
+       "      <th>name</th>\n",
+       "      <th>funcstat</th>\n",
+       "      <th>pop100</th>\n",
+       "      <th>hu100</th>\n",
+       "      <th>intptlat</th>\n",
+       "      <th>intptlon</th>\n",
+       "      <th>lsadc</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>UR1US</td>\n",
+       "      <td>US</td>\n",
+       "      <td>0</td>\n",
+       "      <td>1</td>\n",
+       "      <td>479832</td>\n",
+       "      <td>18570</td>\n",
+       "      <td>860</td>\n",
+       "      <td>0</td>\n",
+       "      <td>601</td>\n",
+       "      <td>166659789</td>\n",
+       "      <td>799296</td>\n",
+       "      <td>ZCTA5 00601</td>\n",
+       "      <td>S</td>\n",
+       "      <td>18570</td>\n",
+       "      <td>7744</td>\n",
+       "      <td>18.180556</td>\n",
+       "      <td>-66.749961</td>\n",
+       "      <td>Z5</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>UR1US</td>\n",
+       "      <td>US</td>\n",
+       "      <td>0</td>\n",
+       "      <td>1</td>\n",
+       "      <td>479836</td>\n",
+       "      <td>41520</td>\n",
+       "      <td>860</td>\n",
+       "      <td>0</td>\n",
+       "      <td>602</td>\n",
+       "      <td>79288158</td>\n",
+       "      <td>4446273</td>\n",
+       "      <td>ZCTA5 00602</td>\n",
+       "      <td>S</td>\n",
+       "      <td>41520</td>\n",
+       "      <td>18073</td>\n",
+       "      <td>18.362268</td>\n",
+       "      <td>-67.176130</td>\n",
+       "      <td>Z5</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>UR1US</td>\n",
+       "      <td>US</td>\n",
+       "      <td>0</td>\n",
+       "      <td>1</td>\n",
+       "      <td>479839</td>\n",
+       "      <td>54689</td>\n",
+       "      <td>860</td>\n",
+       "      <td>0</td>\n",
+       "      <td>603</td>\n",
+       "      <td>81880442</td>\n",
+       "      <td>183425</td>\n",
+       "      <td>ZCTA5 00603</td>\n",
+       "      <td>S</td>\n",
+       "      <td>54689</td>\n",
+       "      <td>25653</td>\n",
+       "      <td>18.455183</td>\n",
+       "      <td>-67.119887</td>\n",
+       "      <td>Z5</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>UR1US</td>\n",
+       "      <td>US</td>\n",
+       "      <td>0</td>\n",
+       "      <td>1</td>\n",
+       "      <td>479842</td>\n",
+       "      <td>6615</td>\n",
+       "      <td>860</td>\n",
+       "      <td>0</td>\n",
+       "      <td>606</td>\n",
+       "      <td>109580061</td>\n",
+       "      <td>12487</td>\n",
+       "      <td>ZCTA5 00606</td>\n",
+       "      <td>S</td>\n",
+       "      <td>6615</td>\n",
+       "      <td>2877</td>\n",
+       "      <td>18.158345</td>\n",
+       "      <td>-66.932911</td>\n",
+       "      <td>Z5</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>UR1US</td>\n",
+       "      <td>US</td>\n",
+       "      <td>0</td>\n",
+       "      <td>1</td>\n",
+       "      <td>479847</td>\n",
+       "      <td>29016</td>\n",
+       "      <td>860</td>\n",
+       "      <td>0</td>\n",
+       "      <td>610</td>\n",
+       "      <td>93021467</td>\n",
+       "      <td>4172001</td>\n",
+       "      <td>ZCTA5 00610</td>\n",
+       "      <td>S</td>\n",
+       "      <td>29016</td>\n",
+       "      <td>12618</td>\n",
+       "      <td>18.290955</td>\n",
+       "      <td>-67.125868</td>\n",
+       "      <td>Z5</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "  fileid stusab  chariter  cifsn  logrecno  p0010001  sumlev  geocomp  zcta5  \\\n",
+       "0  UR1US     US         0      1    479832     18570     860        0    601   \n",
+       "1  UR1US     US         0      1    479836     41520     860        0    602   \n",
+       "2  UR1US     US         0      1    479839     54689     860        0    603   \n",
+       "3  UR1US     US         0      1    479842      6615     860        0    606   \n",
+       "4  UR1US     US         0      1    479847     29016     860        0    610   \n",
+       "\n",
+       "    arealand  areawatr         name funcstat  pop100  hu100   intptlat  \\\n",
+       "0  166659789    799296  ZCTA5 00601        S   18570   7744  18.180556   \n",
+       "1   79288158   4446273  ZCTA5 00602        S   41520  18073  18.362268   \n",
+       "2   81880442    183425  ZCTA5 00603        S   54689  25653  18.455183   \n",
+       "3  109580061     12487  ZCTA5 00606        S    6615   2877  18.158345   \n",
+       "4   93021467   4172001  ZCTA5 00610        S   29016  12618  18.290955   \n",
+       "\n",
+       "    intptlon lsadc  \n",
+       "0 -66.749961    Z5  \n",
+       "1 -67.176130    Z5  \n",
+       "2 -67.119887    Z5  \n",
+       "3 -66.932911    Z5  \n",
+       "4 -67.125868    Z5  "
+      ]
+     },
+     "execution_count": 81,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "dataset_a = pd.read_csv('tasksheetdataa.csv')\n",
+    "dataset_a.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 82,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "dataset_z = pd.read_csv('tasksheetdataz.csv')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 83,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# remove unneeded columns\n",
+    "dataset_a = dataset_a.drop(columns=['fileid', 'chariter', 'cifsn', 'logrecno', 'sumlev', 'geocomp', 'areawatr', 'name', 'funcstat', 'hu100', 'intptlat', 'intptlon', 'lsadc'])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 84,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# remove unneeded columns\n",
+    "dataset_z = dataset_z.drop(columns=['county', 'county_fips', 'community', 'community_code', 'accuracy'])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 85,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# rename column zcta5 to zip to make the column name consistent between datasets\n",
+    "dataset_a = dataset_a.rename(columns={'zcta5':'zip'})"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 86,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# drop stusab column on dataset a since it isn't actually the state abbreviation - it's probably mislabeled as every row is 'US'\n",
+    "dataset_a = dataset_a.drop(columns = {'stusab'})"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 89,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#dataset_a['zip'].count()\n",
+    "#dataset_a.sample(20)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 90,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>country</th>\n",
+       "      <th>zip</th>\n",
+       "      <th>city</th>\n",
+       "      <th>state</th>\n",
+       "      <th>stusab</th>\n",
+       "      <th>latitude</th>\n",
+       "      <th>longitude</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>US</td>\n",
+       "      <td>99553</td>\n",
+       "      <td>Akutan</td>\n",
+       "      <td>Alaska</td>\n",
+       "      <td>AK</td>\n",
+       "      <td>54.1430</td>\n",
+       "      <td>-165.7854</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>US</td>\n",
+       "      <td>99571</td>\n",
+       "      <td>Cold Bay</td>\n",
+       "      <td>Alaska</td>\n",
+       "      <td>AK</td>\n",
+       "      <td>55.1858</td>\n",
+       "      <td>-162.7211</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>US</td>\n",
+       "      <td>99583</td>\n",
+       "      <td>False Pass</td>\n",
+       "      <td>Alaska</td>\n",
+       "      <td>AK</td>\n",
+       "      <td>54.8542</td>\n",
+       "      <td>-163.4113</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>US</td>\n",
+       "      <td>99612</td>\n",
+       "      <td>King Cove</td>\n",
+       "      <td>Alaska</td>\n",
+       "      <td>AK</td>\n",
+       "      <td>55.0628</td>\n",
+       "      <td>-162.3056</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>US</td>\n",
+       "      <td>99661</td>\n",
+       "      <td>Sand Point</td>\n",
+       "      <td>Alaska</td>\n",
+       "      <td>AK</td>\n",
+       "      <td>55.3192</td>\n",
+       "      <td>-160.4914</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "  country    zip        city   state stusab  latitude  longitude\n",
+       "0      US  99553      Akutan  Alaska     AK   54.1430  -165.7854\n",
+       "1      US  99571    Cold Bay  Alaska     AK   55.1858  -162.7211\n",
+       "2      US  99583  False Pass  Alaska     AK   54.8542  -163.4113\n",
+       "3      US  99612   King Cove  Alaska     AK   55.0628  -162.3056\n",
+       "4      US  99661  Sand Point  Alaska     AK   55.3192  -160.4914"
+      ]
+     },
+     "execution_count": 90,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "dataset_z['zip'].count()\n",
+    "dataset_z.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 91,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "32974"
+      ]
+     },
+     "execution_count": 91,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Inner join data sets on zip column\n",
+    "joined = pd.merge(left = dataset_z, right = dataset_a, how = 'inner', on = 'zip')\n",
+    "joined.head()\n",
+    "joined['zip'].count()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## a) State with the most 5-digit ZIP codes"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 92,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(32974, 10)"
+      ]
+     },
+     "execution_count": 92,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# convert zip column to string so that the length can be used\n",
+    "joined['zip'] = joined['zip'].astype('str')\n",
+    "joined.head()\n",
+    "joined.shape"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 93,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# create a subset of data where the zips are all five digits\n",
+    "five_bool = joined['zip'].str.len() == 5\n",
+    "five = joined.loc[five_bool]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 94,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "zip    1935\n",
+       "Name: TX, dtype: int64"
+      ]
+     },
+     "execution_count": 94,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# find the total number of zip codes by state\n",
+    "zip_counts = five.groupby(['stusab'])['zip'].count()\n",
+    "zip_counts = zip_counts.sort_values(ascending=False)\n",
+    "zip_counts = zip_counts.to_frame()\n",
+    "zip_counts.iloc[0]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Texas has the most 5-digit zip codes with a total of 1935. Maybe this should be distinct zip codes?"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## b) "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## i. Most easterly ZIP code"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 95,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "-71.944"
+      ]
+     },
+     "execution_count": 95,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# this creates a series that shows the maximum longitude per zip code \n",
+    "easterly = five.groupby(['zip'])['longitude'].max().max()\n",
+    "easterly"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 96,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "most_easterly_zip = five[five.longitude == easterly]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 97,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>country</th>\n",
+       "      <th>zip</th>\n",
+       "      <th>city</th>\n",
+       "      <th>state</th>\n",
+       "      <th>stusab</th>\n",
+       "      <th>latitude</th>\n",
+       "      <th>longitude</th>\n",
+       "      <th>p0010001</th>\n",
+       "      <th>arealand</th>\n",
+       "      <th>pop100</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>21476</th>\n",
+       "      <td>US</td>\n",
+       "      <td>11954</td>\n",
+       "      <td>Montauk</td>\n",
+       "      <td>New York</td>\n",
+       "      <td>NY</td>\n",
+       "      <td>41.0459</td>\n",
+       "      <td>-71.944</td>\n",
+       "      <td>3326</td>\n",
+       "      <td>47942719</td>\n",
+       "      <td>3326</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "      country    zip     city     state stusab  latitude  longitude  p0010001  \\\n",
+       "21476      US  11954  Montauk  New York     NY   41.0459    -71.944      3326   \n",
+       "\n",
+       "       arealand  pop100  \n",
+       "21476  47942719    3326  "
+      ]
+     },
+     "execution_count": 97,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "most_easterly_zip"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Montauk, NY has the most easterly zip (11954)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "------------------------"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## ii. Most westerly ZIP, excluding Alaska"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 98,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>country</th>\n",
+       "      <th>zip</th>\n",
+       "      <th>city</th>\n",
+       "      <th>state</th>\n",
+       "      <th>stusab</th>\n",
+       "      <th>latitude</th>\n",
+       "      <th>longitude</th>\n",
+       "      <th>p0010001</th>\n",
+       "      <th>arealand</th>\n",
+       "      <th>pop100</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>6360</th>\n",
+       "      <td>US</td>\n",
+       "      <td>96769</td>\n",
+       "      <td>Makaweli</td>\n",
+       "      <td>Hawaii</td>\n",
+       "      <td>HI</td>\n",
+       "      <td>21.9454</td>\n",
+       "      <td>-159.9214</td>\n",
+       "      <td>464</td>\n",
+       "      <td>193525234</td>\n",
+       "      <td>464</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "     country    zip      city   state stusab  latitude  longitude  p0010001  \\\n",
+       "6360      US  96769  Makaweli  Hawaii     HI   21.9454  -159.9214       464   \n",
+       "\n",
+       "       arealand  pop100  \n",
+       "6360  193525234     464  "
+      ]
+     },
+     "execution_count": 98,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# task b - excluding Alaska, find the most westerly zip code\n",
+    "westerly_no_ak = five[(five['stusab'] != 'AK')].longitude.min()\n",
+    "westerly_no_ak\n",
+    "most_westerly_not_ak = five[five.longitude == westerly_no_ak]\n",
+    "most_westerly_not_ak"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Makaweli, Hawaii has the most westerly zip (96769) when Alaska is excluded"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "---------------------"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## iii. Most northerly ZIP"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 99,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "71.2346"
+      ]
+     },
+     "execution_count": 99,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "northerly = five['latitude'].max()\n",
+    "northerly"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 100,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>country</th>\n",
+       "      <th>zip</th>\n",
+       "      <th>city</th>\n",
+       "      <th>state</th>\n",
+       "      <th>stusab</th>\n",
+       "      <th>latitude</th>\n",
+       "      <th>longitude</th>\n",
+       "      <th>p0010001</th>\n",
+       "      <th>arealand</th>\n",
+       "      <th>pop100</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>154</th>\n",
+       "      <td>US</td>\n",
+       "      <td>99723</td>\n",
+       "      <td>Barrow</td>\n",
+       "      <td>Alaska</td>\n",
+       "      <td>AK</td>\n",
+       "      <td>71.2346</td>\n",
+       "      <td>-156.8174</td>\n",
+       "      <td>4213</td>\n",
+       "      <td>53780612</td>\n",
+       "      <td>4213</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "    country    zip    city   state stusab  latitude  longitude  p0010001  \\\n",
+       "154      US  99723  Barrow  Alaska     AK   71.2346  -156.8174      4213   \n",
+       "\n",
+       "     arealand  pop100  \n",
+       "154  53780612    4213  "
+      ]
+     },
+     "execution_count": 100,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "most_northerly = five[five.latitude == northerly]\n",
+    "most_northerly"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Barrow, Alaska has the most northerly zip (99723)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "-------------"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## c) Zip code with the highest population density"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 101,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "/Users/emmakeefe/anaconda3/lib/python3.7/site-packages/ipykernel_launcher.py:1: SettingWithCopyWarning: \n",
+      "A value is trying to be set on a copy of a slice from a DataFrame.\n",
+      "Try using .loc[row_indexer,col_indexer] = value instead\n",
+      "\n",
+      "See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy\n",
+      "  \"\"\"Entry point for launching an IPython kernel.\n"
+     ]
+    },
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>country</th>\n",
+       "      <th>zip</th>\n",
+       "      <th>city</th>\n",
+       "      <th>state</th>\n",
+       "      <th>stusab</th>\n",
+       "      <th>latitude</th>\n",
+       "      <th>longitude</th>\n",
+       "      <th>p0010001</th>\n",
+       "      <th>arealand</th>\n",
+       "      <th>pop100</th>\n",
+       "      <th>pop_density</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>4467</th>\n",
+       "      <td>US</td>\n",
+       "      <td>20052</td>\n",
+       "      <td>Washington</td>\n",
+       "      <td>District of Columbia</td>\n",
+       "      <td>DC</td>\n",
+       "      <td>38.9001</td>\n",
+       "      <td>-77.0479</td>\n",
+       "      <td>470</td>\n",
+       "      <td>7062</td>\n",
+       "      <td>470</td>\n",
+       "      <td>0.066553</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "     country    zip        city                 state stusab  latitude  \\\n",
+       "4467      US  20052  Washington  District of Columbia     DC   38.9001   \n",
+       "\n",
+       "      longitude  p0010001  arealand  pop100  pop_density  \n",
+       "4467   -77.0479       470      7062     470     0.066553  "
+      ]
+     },
+     "execution_count": 101,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "five['pop_density'] = five.pop100/five.arealand\n",
+    "highest_density = five['pop_density'].max()\n",
+    "high_density_zip = five[five.pop_density == highest_density]\n",
+    "high_density_zip"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Washington DC has the zip code with the highest population density: 20052"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## d) "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## i. Which 3-digit zip codes are common to more than one state?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 102,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>country</th>\n",
+       "      <th>zip</th>\n",
+       "      <th>city</th>\n",
+       "      <th>state</th>\n",
+       "      <th>stusab</th>\n",
+       "      <th>latitude</th>\n",
+       "      <th>longitude</th>\n",
+       "      <th>p0010001</th>\n",
+       "      <th>arealand</th>\n",
+       "      <th>pop100</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>US</td>\n",
+       "      <td>99553</td>\n",
+       "      <td>Akutan</td>\n",
+       "      <td>Alaska</td>\n",
+       "      <td>AK</td>\n",
+       "      <td>54.1430</td>\n",
+       "      <td>-165.7854</td>\n",
+       "      <td>1027</td>\n",
+       "      <td>35823298</td>\n",
+       "      <td>1027</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>US</td>\n",
+       "      <td>99571</td>\n",
+       "      <td>Cold Bay</td>\n",
+       "      <td>Alaska</td>\n",
+       "      <td>AK</td>\n",
+       "      <td>55.1858</td>\n",
+       "      <td>-162.7211</td>\n",
+       "      <td>160</td>\n",
+       "      <td>76206560</td>\n",
+       "      <td>160</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>US</td>\n",
+       "      <td>99583</td>\n",
+       "      <td>False Pass</td>\n",
+       "      <td>Alaska</td>\n",
+       "      <td>AK</td>\n",
+       "      <td>54.8542</td>\n",
+       "      <td>-163.4113</td>\n",
+       "      <td>35</td>\n",
+       "      <td>33061429</td>\n",
+       "      <td>35</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>US</td>\n",
+       "      <td>99612</td>\n",
+       "      <td>King Cove</td>\n",
+       "      <td>Alaska</td>\n",
+       "      <td>AK</td>\n",
+       "      <td>55.0628</td>\n",
+       "      <td>-162.3056</td>\n",
+       "      <td>938</td>\n",
+       "      <td>30280355</td>\n",
+       "      <td>938</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>US</td>\n",
+       "      <td>99661</td>\n",
+       "      <td>Sand Point</td>\n",
+       "      <td>Alaska</td>\n",
+       "      <td>AK</td>\n",
+       "      <td>55.3192</td>\n",
+       "      <td>-160.4914</td>\n",
+       "      <td>978</td>\n",
+       "      <td>460666008</td>\n",
+       "      <td>978</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "  country    zip        city   state stusab  latitude  longitude  p0010001  \\\n",
+       "0      US  99553      Akutan  Alaska     AK   54.1430  -165.7854      1027   \n",
+       "1      US  99571    Cold Bay  Alaska     AK   55.1858  -162.7211       160   \n",
+       "2      US  99583  False Pass  Alaska     AK   54.8542  -163.4113        35   \n",
+       "3      US  99612   King Cove  Alaska     AK   55.0628  -162.3056       938   \n",
+       "4      US  99661  Sand Point  Alaska     AK   55.3192  -160.4914       978   \n",
+       "\n",
+       "    arealand  pop100  \n",
+       "0   35823298    1027  \n",
+       "1   76206560     160  \n",
+       "2   33061429      35  \n",
+       "3   30280355     938  \n",
+       "4  460666008     978  "
+      ]
+     },
+     "execution_count": 102,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "#convert 5-digit ZIPs to 3-digit ZIPs\n",
+    "joined.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 103,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "joined['zip3'] = joined['zip'].str.slice(0,3)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 104,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>country</th>\n",
+       "      <th>zip</th>\n",
+       "      <th>city</th>\n",
+       "      <th>state</th>\n",
+       "      <th>stusab</th>\n",
+       "      <th>latitude</th>\n",
+       "      <th>longitude</th>\n",
+       "      <th>p0010001</th>\n",
+       "      <th>arealand</th>\n",
+       "      <th>pop100</th>\n",
+       "      <th>zip3</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>719</th>\n",
+       "      <td>US</td>\n",
+       "      <td>36107</td>\n",
+       "      <td>Montgomery</td>\n",
+       "      <td>Alabama</td>\n",
+       "      <td>AL</td>\n",
+       "      <td>32.3804</td>\n",
+       "      <td>-86.2799</td>\n",
+       "      <td>9589</td>\n",
+       "      <td>8377980</td>\n",
+       "      <td>9589</td>\n",
+       "      <td>361</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4533</th>\n",
+       "      <td>US</td>\n",
+       "      <td>19803</td>\n",
+       "      <td>Wilmington</td>\n",
+       "      <td>Delaware</td>\n",
+       "      <td>DE</td>\n",
+       "      <td>39.7994</td>\n",
+       "      <td>-75.5317</td>\n",
+       "      <td>21364</td>\n",
+       "      <td>32633427</td>\n",
+       "      <td>21364</td>\n",
+       "      <td>198</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>8651</th>\n",
+       "      <td>US</td>\n",
+       "      <td>62996</td>\n",
+       "      <td>Villa Ridge</td>\n",
+       "      <td>Illinois</td>\n",
+       "      <td>IL</td>\n",
+       "      <td>37.1578</td>\n",
+       "      <td>-89.1825</td>\n",
+       "      <td>535</td>\n",
+       "      <td>65670550</td>\n",
+       "      <td>535</td>\n",
+       "      <td>629</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>13051</th>\n",
+       "      <td>US</td>\n",
+       "      <td>4579</td>\n",
+       "      <td>Woolwich</td>\n",
+       "      <td>Maine</td>\n",
+       "      <td>ME</td>\n",
+       "      <td>43.9503</td>\n",
+       "      <td>-69.7891</td>\n",
+       "      <td>3072</td>\n",
+       "      <td>90842229</td>\n",
+       "      <td>3072</td>\n",
+       "      <td>457</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>26598</th>\n",
+       "      <td>US</td>\n",
+       "      <td>57585</td>\n",
+       "      <td>Wood</td>\n",
+       "      <td>South Dakota</td>\n",
+       "      <td>SD</td>\n",
+       "      <td>43.5366</td>\n",
+       "      <td>-100.4379</td>\n",
+       "      <td>226</td>\n",
+       "      <td>857529962</td>\n",
+       "      <td>226</td>\n",
+       "      <td>575</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>29585</th>\n",
+       "      <td>US</td>\n",
+       "      <td>23410</td>\n",
+       "      <td>Melfa</td>\n",
+       "      <td>Virginia</td>\n",
+       "      <td>VA</td>\n",
+       "      <td>37.6407</td>\n",
+       "      <td>-75.7454</td>\n",
+       "      <td>2015</td>\n",
+       "      <td>74934072</td>\n",
+       "      <td>2015</td>\n",
+       "      <td>234</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2014</th>\n",
+       "      <td>US</td>\n",
+       "      <td>94595</td>\n",
+       "      <td>Walnut Creek</td>\n",
+       "      <td>California</td>\n",
+       "      <td>CA</td>\n",
+       "      <td>37.8753</td>\n",
+       "      <td>-122.0703</td>\n",
+       "      <td>16425</td>\n",
+       "      <td>13930717</td>\n",
+       "      <td>16425</td>\n",
+       "      <td>945</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2279</th>\n",
+       "      <td>US</td>\n",
+       "      <td>90026</td>\n",
+       "      <td>Los Angeles</td>\n",
+       "      <td>California</td>\n",
+       "      <td>CA</td>\n",
+       "      <td>34.0766</td>\n",
+       "      <td>-118.2646</td>\n",
+       "      <td>67869</td>\n",
+       "      <td>10942889</td>\n",
+       "      <td>67869</td>\n",
+       "      <td>900</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>25342</th>\n",
+       "      <td>US</td>\n",
+       "      <td>17824</td>\n",
+       "      <td>Elysburg</td>\n",
+       "      <td>Pennsylvania</td>\n",
+       "      <td>PA</td>\n",
+       "      <td>40.8639</td>\n",
+       "      <td>-76.5569</td>\n",
+       "      <td>4115</td>\n",
+       "      <td>68396595</td>\n",
+       "      <td>4115</td>\n",
+       "      <td>178</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>5187</th>\n",
+       "      <td>US</td>\n",
+       "      <td>32803</td>\n",
+       "      <td>Orlando</td>\n",
+       "      <td>Florida</td>\n",
+       "      <td>FL</td>\n",
+       "      <td>28.5559</td>\n",
+       "      <td>-81.3535</td>\n",
+       "      <td>19020</td>\n",
+       "      <td>17970616</td>\n",
+       "      <td>19020</td>\n",
+       "      <td>328</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "      country    zip          city         state stusab  latitude  longitude  \\\n",
+       "719        US  36107    Montgomery       Alabama     AL   32.3804   -86.2799   \n",
+       "4533       US  19803    Wilmington      Delaware     DE   39.7994   -75.5317   \n",
+       "8651       US  62996   Villa Ridge      Illinois     IL   37.1578   -89.1825   \n",
+       "13051      US   4579      Woolwich         Maine     ME   43.9503   -69.7891   \n",
+       "26598      US  57585          Wood  South Dakota     SD   43.5366  -100.4379   \n",
+       "29585      US  23410         Melfa      Virginia     VA   37.6407   -75.7454   \n",
+       "2014       US  94595  Walnut Creek    California     CA   37.8753  -122.0703   \n",
+       "2279       US  90026   Los Angeles    California     CA   34.0766  -118.2646   \n",
+       "25342      US  17824      Elysburg  Pennsylvania     PA   40.8639   -76.5569   \n",
+       "5187       US  32803       Orlando       Florida     FL   28.5559   -81.3535   \n",
+       "\n",
+       "       p0010001   arealand  pop100 zip3  \n",
+       "719        9589    8377980    9589  361  \n",
+       "4533      21364   32633427   21364  198  \n",
+       "8651        535   65670550     535  629  \n",
+       "13051      3072   90842229    3072  457  \n",
+       "26598       226  857529962     226  575  \n",
+       "29585      2015   74934072    2015  234  \n",
+       "2014      16425   13930717   16425  945  \n",
+       "2279      67869   10942889   67869  900  \n",
+       "25342      4115   68396595    4115  178  \n",
+       "5187      19020   17970616   19020  328  "
+      ]
+     },
+     "execution_count": 104,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "joined.sample(10)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 120,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# zip code, state, count per state\n",
+    "#joined.groupby(['zip', 'stusab'])['stusab'].count()\n",
+    "\n",
+    "# I need to exclude the zips with only one state\n",
+    "states_zips = joined.groupby(['zip3'])['stusab'].unique()\n",
+    "#sates_zips"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "three_bool = joined['zip'].str.len() == 3\n",
+    "three = joined.loc[three_bool]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# it doesn't look like there are any three digit zip codes in the joined dataset\n",
+    "three\n",
+    "joined.to_csv('joined.csv')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "NameError",
+     "evalue": "name 'z' is not defined",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mNameError\u001b[0m                                 Traceback (most recent call last)",
+      "\u001b[0;32m<ipython-input-23-6075f76b30f1>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m\u001b[0m\n\u001b[1;32m      1\u001b[0m \u001b[0;31m# convert to string\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m----> 2\u001b[0;31m \u001b[0mz\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;34m'zip'\u001b[0m\u001b[0;34m]\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mz\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;34m'zip'\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mastype\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m'str'\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m      3\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      4\u001b[0m \u001b[0;31m# create a boolean column identifying 3-digit zips\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      5\u001b[0m \u001b[0mz\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;34m'zip_3'\u001b[0m\u001b[0;34m]\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mz\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;34m'zip'\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mstr\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mlen\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m==\u001b[0m\u001b[0;36m3\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;31mNameError\u001b[0m: name 'z' is not defined"
+     ]
+    }
+   ],
+   "source": [
+    "# convert to string\n",
+    "z['zip'] = z['zip'].astype('str')\n",
+    "\n",
+    "# create a boolean column identifying 3-digit zips\n",
+    "z['zip_3'] = z['zip'].str.len()==3\n",
+    "\n",
+    "# create a new dataframe of 3-digit zips from dataset z\n",
+    "z_three = z[(z['zip_3'] == True)]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "z_three"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### There is no overlap of 3 digit zip codes between datasets. There are 2 in Dataset Z and 131 in Dataset A. Dataset A doesn't have any state info."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# convert zip to string so length can be calculated\n",
+    "a['zip'] = a['zip'].astype('str')\n",
+    "\n",
+    "\n",
+    "# create a boolean column identifying 3-digit zips\n",
+    "a['zip_3'] = a['zip'].str.len()==3\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# create a new dataframe of 3-digit zips from dataset a\n",
+    "a_three = a[(a['zip_3'] == True)]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### I think perhaps the idea is to convert five digit zips to three digit zips in the joined data and then answer the questions"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 482,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "KeyError",
+     "evalue": "'3_digit'",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mKeyError\u001b[0m                                  Traceback (most recent call last)",
+      "\u001b[0;32m~/anaconda3/lib/python3.7/site-packages/pandas/core/indexes/base.py\u001b[0m in \u001b[0;36mget_loc\u001b[0;34m(self, key, method, tolerance)\u001b[0m\n\u001b[1;32m   2656\u001b[0m             \u001b[0;32mtry\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m-> 2657\u001b[0;31m                 \u001b[0;32mreturn\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_engine\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mget_loc\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mkey\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m   2658\u001b[0m             \u001b[0;32mexcept\u001b[0m \u001b[0mKeyError\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32mpandas/_libs/index.pyx\u001b[0m in \u001b[0;36mpandas._libs.index.IndexEngine.get_loc\u001b[0;34m()\u001b[0m\n",
+      "\u001b[0;32mpandas/_libs/index.pyx\u001b[0m in \u001b[0;36mpandas._libs.index.IndexEngine.get_loc\u001b[0;34m()\u001b[0m\n",
+      "\u001b[0;32mpandas/_libs/hashtable_class_helper.pxi\u001b[0m in \u001b[0;36mpandas._libs.hashtable.PyObjectHashTable.get_item\u001b[0;34m()\u001b[0m\n",
+      "\u001b[0;32mpandas/_libs/hashtable_class_helper.pxi\u001b[0m in \u001b[0;36mpandas._libs.hashtable.PyObjectHashTable.get_item\u001b[0;34m()\u001b[0m\n",
+      "\u001b[0;31mKeyError\u001b[0m: '3_digit'",
+      "\nDuring handling of the above exception, another exception occurred:\n",
+      "\u001b[0;31mKeyError\u001b[0m                                  Traceback (most recent call last)",
+      "\u001b[0;32m<ipython-input-482-568180cc6209>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m\u001b[0m\n\u001b[0;32m----> 1\u001b[0;31m \u001b[0mjoined\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;34m'3_digit'\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+      "\u001b[0;32m~/anaconda3/lib/python3.7/site-packages/pandas/core/frame.py\u001b[0m in \u001b[0;36m__getitem__\u001b[0;34m(self, key)\u001b[0m\n\u001b[1;32m   2925\u001b[0m             \u001b[0;32mif\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mcolumns\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mnlevels\u001b[0m \u001b[0;34m>\u001b[0m \u001b[0;36m1\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   2926\u001b[0m                 \u001b[0;32mreturn\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_getitem_multilevel\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mkey\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m-> 2927\u001b[0;31m             \u001b[0mindexer\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mcolumns\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mget_loc\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mkey\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m   2928\u001b[0m             \u001b[0;32mif\u001b[0m \u001b[0mis_integer\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mindexer\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   2929\u001b[0m                 \u001b[0mindexer\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;34m[\u001b[0m\u001b[0mindexer\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/anaconda3/lib/python3.7/site-packages/pandas/core/indexes/base.py\u001b[0m in \u001b[0;36mget_loc\u001b[0;34m(self, key, method, tolerance)\u001b[0m\n\u001b[1;32m   2657\u001b[0m                 \u001b[0;32mreturn\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_engine\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mget_loc\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mkey\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   2658\u001b[0m             \u001b[0;32mexcept\u001b[0m \u001b[0mKeyError\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m-> 2659\u001b[0;31m                 \u001b[0;32mreturn\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_engine\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mget_loc\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_maybe_cast_indexer\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mkey\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m   2660\u001b[0m         \u001b[0mindexer\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mget_indexer\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mkey\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mmethod\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mmethod\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mtolerance\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mtolerance\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   2661\u001b[0m         \u001b[0;32mif\u001b[0m \u001b[0mindexer\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mndim\u001b[0m \u001b[0;34m>\u001b[0m \u001b[0;36m1\u001b[0m \u001b[0;32mor\u001b[0m \u001b[0mindexer\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0msize\u001b[0m \u001b[0;34m>\u001b[0m \u001b[0;36m1\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32mpandas/_libs/index.pyx\u001b[0m in \u001b[0;36mpandas._libs.index.IndexEngine.get_loc\u001b[0;34m()\u001b[0m\n",
+      "\u001b[0;32mpandas/_libs/index.pyx\u001b[0m in \u001b[0;36mpandas._libs.index.IndexEngine.get_loc\u001b[0;34m()\u001b[0m\n",
+      "\u001b[0;32mpandas/_libs/hashtable_class_helper.pxi\u001b[0m in \u001b[0;36mpandas._libs.hashtable.PyObjectHashTable.get_item\u001b[0;34m()\u001b[0m\n",
+      "\u001b[0;32mpandas/_libs/hashtable_class_helper.pxi\u001b[0m in \u001b[0;36mpandas._libs.hashtable.PyObjectHashTable.get_item\u001b[0;34m()\u001b[0m\n",
+      "\u001b[0;31mKeyError\u001b[0m: '3_digit'"
+     ]
+    }
+   ],
+   "source": [
+    "joined['3_digit']"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.7.3"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
